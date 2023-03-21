@@ -36,8 +36,9 @@ const initialValues = {
 }
 
 export const ContactForm = ({ getSubmit }) => {
-  const handleSabmit = (values, actions) => {
-    getSubmit(values);
+  const handleSabmit = async (values, actions) => {
+    await getSubmit(values);
+    actions.setSubmitting(false);
     actions.resetForm();
   }
 
@@ -47,24 +48,28 @@ export const ContactForm = ({ getSubmit }) => {
       validationSchema={schema}
       onSubmit={handleSabmit}>
 
-      <Forma>
-        <label>Name
-          <Input
-            type="text"
-            name="name"
-          />
-          <ErrorMessage component="div" name="name"/>
+      {({ isSubmitting }) => (
+        (
+          <Forma>
+            <label>Name
+              <Input
+                type="text"
+                name="name"
+              />
+              <ErrorMessage component="div" name="name"/>
 
-        </label>
-        <label>Number
-          <Input
-            type="tel"
-            name="number"
-          />
-          <ErrorMessage component="div" name="number"/>
-        </label>
-        <Button type="submit">Add contact</Button>
-      </Forma>
+            </label>
+            <label>Number
+              <Input
+                type="tel"
+                name="number"
+              />
+              <ErrorMessage component="div" name="number"/>
+            </label>
+            <Button type="submit" disabled={isSubmitting}>Add contact</Button>
+          </Forma>
+        )
+      )}
     </Formik>
   );
 }
